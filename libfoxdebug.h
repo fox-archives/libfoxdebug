@@ -93,9 +93,8 @@ _Generic( \
 )
 #undef FOX_INTERNAL_DECIMAL
 
-#define fox_typename_get_str(variable_name, controlling_expression) \
-  int _internal_type_id = fox_typename_get(controlling_expression); \
-  char* (variable_name) = ffox_typename_get_str(_internal_type_id)
+#define fox_typename_get_str(controlling_expression) \
+  ffox_typename_get_str(fox_typename_get(controlling_expression))
 
 char* ffox_typename_get_str(enum FOX_TYPE type_number) {
   switch (type_number) {
