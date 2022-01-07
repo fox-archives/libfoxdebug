@@ -17,7 +17,7 @@ int main() {
   int n = 5;
   float j = 5.5F;
   long long int super_long = 44;
-  fox_typename_print_str(n);
-  fox_typename_print_str(j);
-  fox_typename_print_str(super_long);
+  fox_typename_print(n);
+  fox_typename_print(j);
+  fox_typename_print(super_long);
 }

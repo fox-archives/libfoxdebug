@@ -160,14 +160,14 @@ char* ffox_typename_get_str(enum FOX_TYPE type_number) {
   }
 }
 
-#define fox_typename_print_str(controlling_expression) \
-  ffox_typename_print_str( \
+#define fox_typename_print(controlling_expression) \
+  ffox_typename_print( \
     fox_typename_get(controlling_expression), \
     #controlling_expression, \
     &(controlling_expression) \
   )
 
-void ffox_typename_print_str(enum FOX_TYPE type_number, char *variable_name, void *variable) {
+void ffox_typename_print(enum FOX_TYPE type_number, char *variable_name, void *variable) {
   switch (type_number) {
   /* boolean type */
   case FOX_TYPE_BOOL:
