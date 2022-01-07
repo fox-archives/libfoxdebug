@@ -33,13 +33,12 @@ Value of 'j' (float): 5.500000
 Value of 'super_long' (long long int): 44
 ```
 
-It's implemented with C11's [_Generic](https://en.cppreference.com/w/c/language/generic) with a little bit of macro magic sprinkled in. Note that the parameter to `fox_typename_print_str` _must_ be at least an lvalue expression
+It's implemented with C11's [_Generic](https://en.cppreference.com/w/c/language/generic) with a little bit of macro magic sprinkled in. Note that the parameter to `fox_typename_print` _must_ be at least an lvalue expression
 
 ## TODO
 
 - Fix _Decimal32, _Decimal64, and _Decimal128
 - Fix complex floating types (`_Complex`)
 - Fix imaginary floating types (`_Imaginary`)
-- Better simulate returning of `fox_get_typename_str` macro
 - `FOX_TYPE_CHAR` compiler dependent
 - Show less macro errors if there is a non-foxdebug-lib error, if possible (validation)
