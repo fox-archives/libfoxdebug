@@ -1,18 +1,23 @@
-// #include <stdbool.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <complex.h>
 
-#define __STDC_IEC_60559_DFP__
-
-#include "libfox.h"
-
+#include "libfoxdebug.h"
 
 int main() {
-  // _Decimal128 dec = 0.0F;
-  double _Imaginary dec = 3*I;
+  // bool var = true;
+  // int result = fox_typename_get(var);
+  // if (result == FOX_TYPE_BOOL) {
+  //   printf("'Tis a bool!\n");
+  // }
 
-  int result = fox_get_typename(dec);
-  char* str = fox_get_typename_str(result);
-  printf("your type is: '%s'\n", str);
+  // fox_typename_get_str(str, var);
+  // printf("Your type: '%s'\n", str);
+
+  int n = 5;
+  float j = 5.5F;
+  long long int super_long = 44;
+  fox_typename_print_str(n);
+  fox_typename_print_str(j);
+  fox_typename_print_str(super_long);
 }

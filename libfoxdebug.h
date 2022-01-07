@@ -1,5 +1,13 @@
 #if __cplusplus
-  #warn "This library has not been tested for C++"
+  #error "Fam, C++ isn't supported"
+#endif
+
+#if _WIN32
+  #warn "Stop using Windows 😡"
+#endif
+
+#if _MSC_VER
+  #warn "Stop using MSVC 😡"
 #endif
 
 /* _Generic introduced in C11 */
@@ -49,7 +57,8 @@ enum FOX_TYPE {
 #else
   #define FOX_INTERNAL_DECIMAL
 #endif
-#define fox_get_typename(controlling_expression) _Generic( \
+#define fox_typename_get(controlling_expression) \
+_Generic( \
   controlling_expression, \
   /* boolean type */ \
   _Bool: FOX_TYPE_BOOL, \
@@ -76,15 +85,19 @@ enum FOX_TYPE {
   double _Complex: FOX_TYPE_DOUBLE_COMPLEX, \
   long double _Complex: FOX_TYPE_LONG_DOUBLE_COMPLEX, \
   /* imaginary floating types */ \
-  float _Imaginary: FOX_TYPE_FLOAT_IMAGINARY, \
-  double _Imaginary: FOX_TYPE_DOUBLE_IMAGINARY, \
-  long double _Imaginary: FOX_TYPE_LONG_DOUBLE_IMAGINARY, \
+  /* float _Imaginary: FOX_TYPE_FLOAT_IMAGINARY, */ \
+  /* double _Imaginary: FOX_TYPE_DOUBLE_IMAGINARY, */ \
+  /* long double _Imaginary: FOX_TYPE_LONG_DOUBLE_IMAGINARY, */ \
   /* default */ \
   default: FOX_TYPE_DEFAULT \
 )
 #undef FOX_INTERNAL_DECIMAL
 
-char* fox_get_typename_str(enum FOX_TYPE type_number) {
+#define fox_typename_get_str(variable_name, controlling_expression) \
+  int _internal_type_id = fox_typename_get(controlling_expression); \
+  char* (variable_name) = ffox_typename_get_str(_internal_type_id)
+
+char* ffox_typename_get_str(enum FOX_TYPE type_number) {
   switch (type_number) {
   /* boolean type */
   case FOX_TYPE_BOOL:
@@ -145,6 +158,101 @@ char* fox_get_typename_str(enum FOX_TYPE type_number) {
   /* default */
   default:
     return "unknown";
+  }
+}
+
+#define fox_typename_print_str(controlling_expression) \
+  ffox_typename_print_str( \
+    fox_typename_get(controlling_expression), \
+    #controlling_expression, \
+    &(controlling_expression) \
+  )
+
+void ffox_typename_print_str(enum FOX_TYPE type_number, char *variable_name, void *variable) {
+  switch (type_number) {
+  /* boolean type */
+  case FOX_TYPE_BOOL:
+    printf("%s (bool): %s\n", variable_name, *(_Bool*)variable ? "true" : "false");
+    break;
+  /* character types */
+  case FOX_TYPE_CHAR:
+    printf("Value of '%s' (char): %c\n", variable_name, *(char*)variable);
+    break;
+  case FOX_TYPE_SIGNED_CHAR:
+    printf("Value of '%s' (signed char): %c\n", variable_name, *(signed char*)variable);
+    break;
+  case FOX_TYPE_UNSIGNED_CHAR:
+    printf("Value of '%s' (unsigned char): %u\n", variable_name, *(unsigned char*)variable);
+    break;
+  /* integer types */
+  case FOX_TYPE_SHORT_INT:
+    printf("Value of '%s' (short int): %hd\n", variable_name, *(short int*)variable);
+    break;
+  case FOX_TYPE_UNSIGNED_SHORT_INT:
+    printf("Value of '%s' (unsigned short int): %hu\n", variable_name, *(unsigned short int*)variable);
+    break;
+  case FOX_TYPE_INT:
+    printf("Value of '%s' (int): %d\n", variable_name, *(int*)variable);
+    break;
+  case FOX_TYPE_UNSIGNED_INT:
+    printf("Value of '%s' (unsigned int): %u\n", variable_name, *(unsigned int*)variable);
+    break;
+  case FOX_TYPE_LONG_INT:
+    printf("Value of '%s' (long int): %ld\n", variable_name, *(long int*)variable);
+    break;
+  case FOX_TYPE_UNSIGNED_LONG_INT:
+    printf("Value of '%s' (unsigned long int): %lu\n", variable_name, *(unsigned long int*)variable);
+    break;
+  case FOX_TYPE_LONG_LONG_INT:
+    printf("Value of '%s' (long long int): %lld\n", variable_name, *(long long int*)variable);
+    break;
+  case FOX_TYPE_UNSIGNED_LONG_LONG_INT:
+    printf("Value of '%s' (unsigned long long int): %llu\n", variable_name, *(unsigned long long int*)variable);
+    break;
+  /* real floating types */
+  case FOX_TYPE_FLOAT:
+    printf("Value of '%s' (float): %f\n", variable_name, *(float*)variable);
+    break;
+  case FOX_TYPE_DOUBLE:
+    printf("Value of '%s' (double): %f\n", variable_name, *(double*)variable);
+    break;
+  case FOX_TYPE_LONG_DOUBLE:
+    printf("Value of '%s' (long double): %Lf\n", variable_name, *(long double*)variable);
+    break;
+#ifdef __STDC_IEC_60559_DFP__
+  case FOX_TYPE_DECIMAL32:
+    printf("unsupported\n");
+    break;
+  case FOX_TYPE_DECIMAL64:
+    printf("unsupported\n");
+    break;
+  case FOX_TYPE_DECIMAL128:
+    printf("unsupported\n");
+    break;
+#endif
+  /* complex floating types */
+  case FOX_TYPE_FLOAT_COMPLEX:
+    printf("unsupported\n");
+    break;
+  case FOX_TYPE_DOUBLE_COMPLEX:
+    printf("unsupported\n");
+    break;
+  case FOX_TYPE_LONG_DOUBLE_COMPLEX:
+    printf("unsupported\n");
+    break;
+  /* imaginary floating types */
+  case FOX_TYPE_FLOAT_IMAGINARY:
+    printf("unsupported\n");
+    break;
+  case FOX_TYPE_DOUBLE_IMAGINARY:
+    printf("unsupported\n");
+    break;
+  case FOX_TYPE_LONG_DOUBLE_IMAGINARY:
+    printf("unsupported\n");
+    break;
+  /* default */
+  default:
+    printf("unknown: %p\n", variable);
   }
 }
 #endif
