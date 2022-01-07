@@ -17,6 +17,7 @@ int main() {
   int n = 5;
   float j = 5.5F;
   long long int super_long = 44;
+
   fox_typename_print_str(n);
   fox_typename_print_str(j);
   fox_typename_print_str(super_long);
@@ -32,7 +33,7 @@ Value of 'j' (float): 5.500000
 Value of 'super_long' (long long int): 44
 ```
 
-It's implemented with C11's [_Generic](https://en.cppreference.com/w/c/language/generic) with a little bit of macro magic sprinkled in
+It's implemented with C11's [_Generic](https://en.cppreference.com/w/c/language/generic) with a little bit of macro magic sprinkled in. Note that the parameter to `fox_typename_print_str` _must_ be at least an lvalue expression
 
 ## TODO
 
